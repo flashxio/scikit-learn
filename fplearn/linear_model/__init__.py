@@ -19,7 +19,7 @@ from .coordinate_descent import (Lasso, ElasticNet, LassoCV, ElasticNetCV,
                                  MultiTaskElasticNet, MultiTaskElasticNetCV,
                                  MultiTaskLassoCV)
 from .huber import HuberRegressor
-from .sgd_fast import Hinge, Log, ModifiedHuber, SquaredLoss, Huber
+#from .sgd_fast import Hinge, Log, ModifiedHuber, SquaredLoss, Huber
 from .stochastic_gradient import SGDClassifier, SGDRegressor
 from .ridge import (Ridge, RidgeCV, RidgeClassifier, RidgeClassifierCV,
                     ridge_regression)

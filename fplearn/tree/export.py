@@ -19,8 +19,8 @@ import warnings
 from ..externals import six
 from ..utils.validation import check_is_fitted
 
-from . import _criterion
-from . import _tree
+#from . import _criterion
+#from . import _tree
 
 
 def _color_brew(n):

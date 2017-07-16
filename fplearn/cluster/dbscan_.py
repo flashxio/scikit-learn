@@ -16,7 +16,7 @@ from ..base import BaseEstimator, ClusterMixin
 from ..utils import check_array, check_consistent_length
 from ..neighbors import NearestNeighbors
 
-from ._dbscan_inner import dbscan_inner
+#from ._dbscan_inner import dbscan_inner
 
 
 def dbscan(X, eps=0.5, min_samples=5, metric='minkowski', metric_params=None,

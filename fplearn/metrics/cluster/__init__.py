@@ -10,7 +10,7 @@ from .supervised import normalized_mutual_info_score
 from .supervised import adjusted_rand_score
 from .supervised import completeness_score
 from .supervised import contingency_matrix
-from .supervised import expected_mutual_information
+#from .supervised import expected_mutual_information
 from .supervised import homogeneity_completeness_v_measure
 from .supervised import homogeneity_score
 from .supervised import mutual_info_score

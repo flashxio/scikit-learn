@@ -20,9 +20,9 @@ from ..externals import six
 from ..metrics.pairwise import paired_distances, pairwise_distances
 from ..utils import check_array
 
-from . import _hierarchical
+#from . import _hierarchical
 from ._feature_agglomeration import AgglomerationTransform
-from ..utils.fast_dict import IntFloatDict
+#from ..utils.fast_dict import IntFloatDict
 
 from ..externals.six.moves import xrange
 

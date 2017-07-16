@@ -20,7 +20,7 @@ from ..base import BaseEstimator, ClusterMixin, TransformerMixin
 from ..metrics.pairwise import euclidean_distances
 from ..metrics.pairwise import pairwise_distances_argmin_min
 from ..utils.extmath import row_norms, squared_norm, stable_cumsum
-from ..utils.sparsefuncs_fast import assign_rows_csr
+#from ..utils.sparsefuncs_fast import assign_rows_csr
 from ..utils.sparsefuncs import mean_variance_axis
 from ..utils import check_array
 from ..utils import check_random_state
@@ -32,8 +32,8 @@ from ..externals.joblib import Parallel
 from ..externals.joblib import delayed
 from ..externals.six import string_types
 
-from . import _k_means
-from ._k_means_elkan import k_means_elkan
+#from . import _k_means
+#from ._k_means_elkan import k_means_elkan
 
 
 ###############################################################################

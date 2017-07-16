@@ -20,7 +20,7 @@ from scipy.linalg.lapack import get_lapack_funcs
 
 from .base import LinearModel
 from ..base import RegressorMixin
-from ..utils import arrayfuncs, as_float_array, check_X_y, deprecated
+from ..utils import as_float_array, check_X_y, deprecated
 from ..model_selection import check_cv
 from ..exceptions import ConvergenceWarning
 from ..externals.joblib import Parallel, delayed

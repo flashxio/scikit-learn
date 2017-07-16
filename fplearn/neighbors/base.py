@@ -12,8 +12,8 @@ from abc import ABCMeta, abstractmethod
 import numpy as np
 from scipy.sparse import csr_matrix, issparse
 
-from .ball_tree import BallTree
-from .kd_tree import KDTree
+#from .ball_tree import BallTree
+#from .kd_tree import KDTree
 from ..base import BaseEstimator
 from ..metrics import pairwise_distances
 from ..metrics.pairwise import PAIRWISE_DISTANCE_FUNCTIONS
@@ -24,8 +24,8 @@ from ..externals.joblib import Parallel, delayed
 from ..exceptions import NotFittedError
 from ..exceptions import DataConversionWarning
 
-VALID_METRICS = dict(ball_tree=BallTree.valid_metrics,
-                     kd_tree=KDTree.valid_metrics,
+VALID_METRICS = dict(#ball_tree=BallTree.valid_metrics,
+                     #kd_tree=KDTree.valid_metrics,
                      # The following list comes from the
                      # sklearn.metrics.pairwise doc string
                      brute=(list(PAIRWISE_DISTANCE_FUNCTIONS.keys()) +

@@ -26,7 +26,7 @@ from ..externals.joblib import Parallel
 from ..externals.joblib import delayed
 from ..externals.joblib import cpu_count
 
-from .pairwise_fast import _chi2_kernel_fast, _sparse_manhattan
+#from .pairwise_fast import _chi2_kernel_fast, _sparse_manhattan
 
 
 # Utility Functions

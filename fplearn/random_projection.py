@@ -40,7 +40,7 @@ from .externals import six
 from .externals.six.moves import xrange
 from .utils import check_random_state
 from .utils.extmath import safe_sparse_dot
-from .utils.random import sample_without_replacement
+#from .utils.random import sample_without_replacement
 from .utils.validation import check_array, check_is_fitted
 from .exceptions import DataDimensionalityWarning
 

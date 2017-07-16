@@ -9,13 +9,13 @@ from scipy.special import gammainc
 from ..base import BaseEstimator
 from ..utils import check_array, check_random_state
 from ..utils.extmath import row_norms
-from .ball_tree import BallTree, DTYPE
-from .kd_tree import KDTree
+#from .ball_tree import BallTree, DTYPE
+#from .kd_tree import KDTree
 
 
 VALID_KERNELS = ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear',
                  'cosine']
-TREE_DICT = {'ball_tree': BallTree, 'kd_tree': KDTree}
+TREE_DICT = {}
 
 
 # TODO: implement a brute force version for testing purposes
@@ -97,12 +97,12 @@ class KernelDensity(BaseEstimator):
         # algorithm to compute the result.
         if algorithm == 'auto':
             # use KD Tree if possible
-            if metric in KDTree.valid_metrics:
-                return 'kd_tree'
-            elif metric in BallTree.valid_metrics:
-                return 'ball_tree'
-            else:
-                raise ValueError("invalid metric: '{0}'".format(metric))
+#            if metric in KDTree.valid_metrics:
+#                return 'kd_tree'
+#            elif metric in BallTree.valid_metrics:
+#                return 'ball_tree'
+#            else:
+            raise ValueError("invalid metric: '{0}'".format(metric))
         elif algorithm in TREE_DICT:
             if metric not in TREE_DICT[algorithm].valid_metrics:
                 raise ValueError("invalid metric for {0}: "

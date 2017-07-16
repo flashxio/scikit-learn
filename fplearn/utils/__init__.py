@@ -7,7 +7,7 @@ import numpy as np
 from scipy.sparse import issparse
 import warnings
 
-from .murmurhash import murmurhash3_32
+#from .murmurhash import murmurhash3_32
 from .validation import (as_float_array,
                          assert_all_finite,
                          check_random_state, column_or_1d, check_array,
@@ -19,7 +19,7 @@ from ..exceptions import DataConversionWarning
 from .deprecation import deprecated
 
 
-__all__ = ["murmurhash3_32", "as_float_array",
+__all__ = ["as_float_array",
            "assert_all_finite", "check_array",
            "check_random_state",
            "compute_class_weight", "compute_sample_weight",

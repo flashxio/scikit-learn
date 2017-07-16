@@ -13,14 +13,14 @@ from scipy import linalg
 import scipy.sparse as sp
 from scipy.spatial.distance import pdist
 from scipy.spatial.distance import squareform
-from ..neighbors import BallTree
+#from ..neighbors import BallTree
 from ..base import BaseEstimator
 from ..utils import check_array
 from ..utils import check_random_state
 from ..decomposition import PCA
 from ..metrics.pairwise import pairwise_distances
-from . import _utils
-from . import _barnes_hut_tsne
+#from . import _utils
+#from . import _barnes_hut_tsne
 from ..externals.six import string_types
 from ..utils import deprecated
 

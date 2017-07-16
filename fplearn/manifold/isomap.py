@@ -7,7 +7,7 @@ import numpy as np
 from ..base import BaseEstimator, TransformerMixin
 from ..neighbors import NearestNeighbors, kneighbors_graph
 from ..utils import check_array
-from ..utils.graph import graph_shortest_path
+#from ..utils.graph import graph_shortest_path
 from ..decomposition import KernelPCA
 from ..preprocessing import KernelCenterer
 

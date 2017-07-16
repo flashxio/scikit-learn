@@ -7,10 +7,10 @@ import scipy.sparse as sp
 import numpy as np
 
 from .fixes import sparse_min_max
-from .sparsefuncs_fast import (
-    csr_mean_variance_axis0 as _csr_mean_var_axis0,
-    csc_mean_variance_axis0 as _csc_mean_var_axis0,
-    incr_mean_variance_axis0 as _incr_mean_var_axis0)
+#from .sparsefuncs_fast import (
+#    csr_mean_variance_axis0 as _csr_mean_var_axis0,
+#    csc_mean_variance_axis0 as _csc_mean_var_axis0,
+#    incr_mean_variance_axis0 as _incr_mean_var_axis0)
 
 
 def _raise_typeerror(X):

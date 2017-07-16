@@ -25,8 +25,8 @@ from ..externals.joblib import Parallel, delayed
 from ..externals.six.moves import xrange
 from ..exceptions import NotFittedError
 
-from ._online_lda import (mean_change, _dirichlet_expectation_1d,
-                          _dirichlet_expectation_2d)
+#from ._online_lda import (mean_change, _dirichlet_expectation_1d,
+#                          _dirichlet_expectation_2d)
 
 EPS = np.finfo(np.float).eps
 

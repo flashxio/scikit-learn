@@ -26,7 +26,7 @@ from ..utils.validation import check_is_fitted
 from ..utils.validation import column_or_1d
 from ..exceptions import ConvergenceWarning
 
-from . import cd_fast
+#from . import cd_fast
 
 
 ###############################################################################

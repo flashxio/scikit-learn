@@ -7,7 +7,7 @@ import scipy.sparse as sp
 import array
 
 from sklearn.utils import check_random_state
-from ._random import sample_without_replacement
+#from ._random import sample_without_replacement
 from .deprecation import deprecated
 
 __all__ = ['sample_without_replacement', 'choice']

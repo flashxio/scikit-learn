@@ -21,17 +21,17 @@ from ..utils.validation import check_is_fitted
 from ..exceptions import ConvergenceWarning
 from ..externals import six
 
-from .sgd_fast import plain_sgd, average_sgd
+#from .sgd_fast import plain_sgd, average_sgd
 from ..utils import compute_class_weight
 from ..utils import deprecated
-from .sgd_fast import Hinge
-from .sgd_fast import SquaredHinge
-from .sgd_fast import Log
-from .sgd_fast import ModifiedHuber
-from .sgd_fast import SquaredLoss
-from .sgd_fast import Huber
-from .sgd_fast import EpsilonInsensitive
-from .sgd_fast import SquaredEpsilonInsensitive
+#from .sgd_fast import Hinge
+#from .sgd_fast import SquaredHinge
+#from .sgd_fast import Log
+#from .sgd_fast import ModifiedHuber
+#from .sgd_fast import SquaredLoss
+#from .sgd_fast import Huber
+#from .sgd_fast import EpsilonInsensitive
+#from .sgd_fast import SquaredEpsilonInsensitive
 
 
 LEARNING_RATE_TYPES = {"constant": 1, "optimal": 2, "invscaling": 3,
@@ -315,16 +315,16 @@ class BaseSGDClassifier(six.with_metaclass(ABCMeta, BaseSGD,
                                            LinearClassifierMixin)):
 
     loss_functions = {
-        "hinge": (Hinge, 1.0),
-        "squared_hinge": (SquaredHinge, 1.0),
-        "perceptron": (Hinge, 0.0),
-        "log": (Log, ),
-        "modified_huber": (ModifiedHuber, ),
-        "squared_loss": (SquaredLoss, ),
-        "huber": (Huber, DEFAULT_EPSILON),
-        "epsilon_insensitive": (EpsilonInsensitive, DEFAULT_EPSILON),
-        "squared_epsilon_insensitive": (SquaredEpsilonInsensitive,
-                                        DEFAULT_EPSILON),
+#        "hinge": (Hinge, 1.0),
+#        "squared_hinge": (SquaredHinge, 1.0),
+#        "perceptron": (Hinge, 0.0),
+#        "log": (Log, ),
+#        "modified_huber": (ModifiedHuber, ),
+#        "squared_loss": (SquaredLoss, ),
+#        "huber": (Huber, DEFAULT_EPSILON),
+#        "epsilon_insensitive": (EpsilonInsensitive, DEFAULT_EPSILON),
+#        "squared_epsilon_insensitive": (SquaredEpsilonInsensitive,
+#                                        DEFAULT_EPSILON),
     }
 
     @abstractmethod
@@ -896,11 +896,11 @@ class SGDClassifier(BaseSGDClassifier):
 class BaseSGDRegressor(BaseSGD, RegressorMixin):
 
     loss_functions = {
-        "squared_loss": (SquaredLoss, ),
-        "huber": (Huber, DEFAULT_EPSILON),
-        "epsilon_insensitive": (EpsilonInsensitive, DEFAULT_EPSILON),
-        "squared_epsilon_insensitive": (SquaredEpsilonInsensitive,
-                                        DEFAULT_EPSILON),
+#        "squared_loss": (SquaredLoss, ),
+#        "huber": (Huber, DEFAULT_EPSILON),
+#        "epsilon_insensitive": (EpsilonInsensitive, DEFAULT_EPSILON),
+#        "squared_epsilon_insensitive": (SquaredEpsilonInsensitive,
+#                                        DEFAULT_EPSILON),
     }
 
     @abstractmethod

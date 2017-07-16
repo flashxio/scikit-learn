@@ -37,12 +37,12 @@ from ..utils.multiclass import check_classification_targets
 from ..utils.validation import check_is_fitted
 from ..exceptions import NotFittedError
 
-from ._criterion import Criterion
-from ._splitter import Splitter
-from ._tree import DepthFirstTreeBuilder
-from ._tree import BestFirstTreeBuilder
-from ._tree import Tree
-from . import _tree, _splitter, _criterion
+#from ._criterion import Criterion
+#from ._splitter import Splitter
+#from ._tree import DepthFirstTreeBuilder
+#from ._tree import BestFirstTreeBuilder
+#from ._tree import Tree
+#from . import _tree, _splitter, _criterion
 
 __all__ = ["DecisionTreeClassifier",
            "DecisionTreeRegressor",

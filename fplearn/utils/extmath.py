@@ -21,9 +21,9 @@ from scipy.sparse import issparse, csr_matrix
 from . import check_random_state, deprecated
 from .fixes import np_version
 from .fixes import logsumexp as scipy_logsumexp
-from ._logistic_sigmoid import _log_logistic_sigmoid
+#from ._logistic_sigmoid import _log_logistic_sigmoid
 from ..externals.six.moves import xrange
-from .sparsefuncs_fast import csr_row_norms
+#from .sparsefuncs_fast import csr_row_norms
 from .validation import check_array
 
 

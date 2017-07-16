@@ -9,7 +9,7 @@ from scipy.stats import spearmanr
 from .base import BaseEstimator, TransformerMixin, RegressorMixin
 from .utils import as_float_array, check_array, check_consistent_length
 from .utils import deprecated
-from ._isotonic import _inplace_contiguous_isotonic_regression, _make_unique
+#from ._isotonic import _inplace_contiguous_isotonic_regression, _make_unique
 import warnings
 import math
 
