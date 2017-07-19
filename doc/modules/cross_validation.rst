@@ -172,6 +172,65 @@ validation iterator instead, for instance::
 
     See :ref:`combining_estimators`.
 
+
+.. _multimetric_cross_validation:
+
+The cross_validate function and multiple metric evaluation
+----------------------------------------------------------
+
+The ``cross_validate`` function differs from ``cross_val_score`` in two ways -
+
+- It allows specifying multiple metrics for evaluation.
+
+- It returns a dict containing training scores, fit-times and score-times in
+  addition to the test score.
+
+For single metric evaluation, where the scoring parameter is a string,
+callable or None, the keys will be - ``['test_score', 'fit_time', 'score_time']``
+
+And for multiple metric evaluation, the return value is a dict with the
+following keys -
+``['test_<scorer1_name>', 'test_<scorer2_name>', 'test_<scorer...>', 'fit_time', 'score_time']``
+
+``return_train_score`` is set to ``True`` by default. It adds train score keys
+for all the scorers. If train scores are not needed, this should be set to
+``False`` explicitly.
+
+The multiple metrics can be specified either as a list, tuple or set of
+predefined scorer names::
+
+    >>> from sklearn.model_selection import cross_validate
+    >>> from sklearn.metrics import recall_score
+    >>> scoring = ['precision_macro', 'recall_macro']
+    >>> clf = svm.SVC(kernel='linear', C=1, random_state=0)
+    >>> scores = cross_validate(clf, iris.data, iris.target, scoring=scoring,
+    ...                         cv=5, return_train_score=False)
+    >>> sorted(scores.keys())
+    ['fit_time', 'score_time', 'test_precision_macro', 'test_recall_macro']
+    >>> scores['test_recall_macro']                       # doctest: +ELLIPSIS
+    array([ 0.96...,  1.  ...,  0.96...,  0.96...,  1.        ])
+
+Or as a dict mapping scorer name to a predefined or custom scoring function::
+
+    >>> from sklearn.metrics.scorer import make_scorer
+    >>> scoring = {'prec_macro': 'precision_macro',
+    ...            'rec_micro': make_scorer(recall_score, average='macro')}
+    >>> scores = cross_validate(clf, iris.data, iris.target, scoring=scoring,
+    ...                         cv=5, return_train_score=True)
+    >>> sorted(scores.keys())                 # doctest: +NORMALIZE_WHITESPACE
+    ['fit_time', 'score_time', 'test_prec_macro', 'test_rec_micro',
+     'train_prec_macro', 'train_rec_micro']
+    >>> scores['train_rec_micro']                         # doctest: +ELLIPSIS
+    array([ 0.97...,  0.97...,  0.99...,  0.98...,  0.98...])
+
+Here is an example of ``cross_validate`` using a single metric::
+
+    >>> scores = cross_validate(clf, iris.data, iris.target,
+    ...                         scoring='precision_macro')
+    >>> sorted(scores.keys())
+    ['fit_time', 'score_time', 'test_score', 'train_score']
+
+
 Obtaining predictions by cross-validation
 -----------------------------------------
 
@@ -186,7 +245,7 @@ These prediction can then be used to evaluate the classifier::
   >>> from sklearn.model_selection import cross_val_predict
   >>> predicted = cross_val_predict(clf, iris.data, iris.target, cv=10)
   >>> metrics.accuracy_score(iris.target, predicted) # doctest: +ELLIPSIS
-  0.966...
+  0.973...
 
 Note that the result of this computation may be slightly different from those
 obtained using :func:`cross_val_score` as the elements are grouped in different
@@ -216,7 +275,7 @@ validation strategies.
 Cross-validation iterators for i.i.d. data
 ==========================================
 
-Assuming that some data is Independent Identically Distributed (i.i.d.) is
+Assuming that some data is Independent and Identically Distributed (i.i.d.) is
 making the assumption that all samples stem from the same generative process
 and that the generative process is assumed to have no memory of past generated
 samples.
@@ -228,10 +287,10 @@ The following cross-validators can be used in such cases.
 While i.i.d. data is a common assumption in machine learning theory, it rarely
 holds in practice. If one knows that the samples have been generated using a
 time-dependent process, it's safer to
-use a `time-series aware cross-validation scheme <time_series_cv>`
+use a :ref:`time-series aware cross-validation scheme <time_series_cv>`
 Similarly if we know that the generative process has a group structure
 (samples from collected from different subjects, experiments, measurement
-devices) it safer to use `group-wise cross-validation <group_cv>`.
+devices) it safer to use :ref:`group-wise cross-validation <group_cv>`.
 
 
 K-fold
@@ -554,8 +613,6 @@ Example of Leave-2-Group Out::
 Group Shuffle Split
 -------------------
 
-:class:`GroupShuffleSplit`
-
 The :class:`GroupShuffleSplit` iterator behaves as a combination of
 :class:`ShuffleSplit` and :class:`LeavePGroupsOut`, and generates a
 sequence of randomized partitions in which a subset of groups are held
@@ -666,8 +723,7 @@ to shuffle the data indices before splitting them. Note that:
   shuffling will be different every time ``KFold(..., shuffle=True)`` is
   iterated. However, ``GridSearchCV`` will use the same shuffling for each set
   of parameters validated by a single call to its ``fit`` method.
-* To ensure results are repeatable (*on the same platform*), use a fixed value
-  for ``random_state``.
+* To get identical results for each split, set ``random_state`` to an integer.
 
 Cross validation and model selection
 ====================================

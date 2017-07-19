@@ -10,7 +10,6 @@ sparse matrices.
 #          Jake Vanderplas <vanderplas@astro.washington.edu>
 # License: BSD 3 clause
 
-import numpy as np
 from scipy import sparse
 
 from .validation import check_array
