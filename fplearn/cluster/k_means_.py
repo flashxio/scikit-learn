@@ -280,7 +280,7 @@ def k_means(X, n_clusters, init='k-means++', precompute_distances='auto',
         raise ValueError('Number of iterations should be a positive number,'
                          ' got %d instead' % max_iter)
 
-    X = as_float_array(X, copy=copy_x)
+#    X = as_float_array(X, copy=copy_x)
     tol = _tolerance(X, tol)
 
     # If the distances are precomputed every job will create a matrix of shape
