@@ -344,39 +344,12 @@ def pairwise_distances_argmin_min(X, Y, axis=1, metric="euclidean",
     if axis == 0:
         X, Y = Y, X
 
-    # Allocate output arrays
-    indices = np.empty(X.shape[0], dtype=np.intp)
-    values = np.empty(X.shape[0])
-    values.fill(np.infty)
-
-    for chunk_x in gen_batches(X.shape[0], batch_size):
-        X_chunk = X[chunk_x, :]
-
-        for chunk_y in gen_batches(Y.shape[0], batch_size):
-            Y_chunk = Y[chunk_y, :]
-
-            if dist_func is not None:
-                if metric == 'euclidean':  # special case, for speed
-                    d_chunk = safe_sparse_dot(X_chunk, Y_chunk.T,
-                                              dense_output=True)
-                    d_chunk *= -2
-                    d_chunk += row_norms(X_chunk, squared=True)[:, np.newaxis]
-                    d_chunk += row_norms(Y_chunk, squared=True)[np.newaxis, :]
-                    np.maximum(d_chunk, 0, d_chunk)
-                else:
-                    d_chunk = dist_func(X_chunk, Y_chunk, **metric_kwargs)
-            else:
-                d_chunk = pairwise_distances(X_chunk, Y_chunk,
-                                             metric=metric, **metric_kwargs)
-
-            # Update indices and minimum values using chunk
-            min_indices = d_chunk.argmin(axis=1)
-            min_values = d_chunk[np.arange(chunk_x.stop - chunk_x.start),
-                                 min_indices]
-
-            flags = values[chunk_x] > min_values
-            indices[chunk_x][flags] = min_indices[flags] + chunk_y.start
-            values[chunk_x][flags] = min_values[flags]
+    if dist_func is not None:
+        dist = dist_func(X, Y, **metric_kwargs)
+    else:
+        dist = pairwise_distances(X, Y, metric=metric, **metric_kwargs)
+    indices = dist.argmin(axis=1)
+    values = dist.min(axis=1)
 
     if metric == "euclidean" and not metric_kwargs.get("squared", False):
         np.sqrt(values, values)
