@@ -401,6 +401,19 @@ def _kmeans_single_elkan(X, n_clusters, max_iter=300, init='k-means++',
     inertia = np.sum((X - centers[labels]) ** 2, dtype=np.float64)
     return labels, inertia, centers, n_iter
 
+def _centers_sparse(X, labels, n_clusters, distances):
+    # TODO we'll implement the sparse version later.
+    return None
+
+def _centers_dense(X, labels, n_clusters, distances):
+    # TODO I need to handle empty clusters.
+    labels = labels.as_factor(n_clusters)
+    centers = X.groupby_row(labels, fp_agg_sum)
+    cnts = labels.groupby(fp_agg_count, with_val=False)
+    cnts = cnts[:,np.newaxis]
+    centers /= cnts
+    return centers
+
 
 def _kmeans_single_lloyd(X, n_clusters, max_iter=300, init='k-means++',
                          verbose=False, x_squared_norms=None,
@@ -494,10 +507,10 @@ def _kmeans_single_lloyd(X, n_clusters, max_iter=300, init='k-means++',
 
         # computation of the means is also called the M-step of EM
         if sp.issparse(X):
-            centers = _k_means._centers_sparse(X, labels, n_clusters,
+            centers = _centers_sparse(X, labels, n_clusters,
                                                distances)
         else:
-            centers = _k_means._centers_dense(X, labels, n_clusters, distances)
+            centers = _centers_dense(X, labels, n_clusters, distances)
 
         if verbose:
             print("Iteration %2d, inertia %.3f" % (i, inertia))
