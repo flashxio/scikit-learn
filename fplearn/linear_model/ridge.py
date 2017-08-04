@@ -14,8 +14,11 @@ import warnings
 
 import numpy as np
 from scipy import linalg
-from scipy import sparse
 from scipy.sparse import linalg as sp_linalg
+
+from flashpy import sparse
+from flashpy import linalg as fp_linalg
+import flashpy as fp
 
 from .base import LinearClassifierMixin, LinearModel, _rescale_data
 from .sag import sag_solver
@@ -182,14 +185,14 @@ def _solve_cholesky_kernel(K, y, alpha, sample_weight=None, copy=False):
 
 
 def _solve_svd(X, y, alpha):
-    U, s, Vt = linalg.svd(X, full_matrices=False)
+    U, s, Vt = fp_linalg.svds(X, k=min(X.shape))
     idx = s > 1e-15  # same default value as scipy.linalg.pinv
     s_nnz = s[idx][:, np.newaxis]
-    UTy = np.dot(U.T, y)
+    UTy = fp.dot(U.T, y)
     d = np.zeros((s.size, alpha.size), dtype=X.dtype)
     d[idx] = s_nnz / (s_nnz ** 2 + alpha)
     d_UT_y = d * UTy
-    return np.dot(Vt.T, d_UT_y).T
+    return fp.dot(Vt.T, d_UT_y).T
 
 
 def ridge_regression(X, y, alpha, sample_weight=None, solver='auto',
