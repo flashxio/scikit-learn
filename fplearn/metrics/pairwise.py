@@ -18,6 +18,8 @@ from scipy.spatial import distance
 from scipy.sparse import csr_matrix
 from scipy.sparse import issparse
 
+import flashpy as fp
+
 from ..utils import check_array
 from ..utils import gen_even_slices
 from ..utils import gen_batches
@@ -36,13 +38,13 @@ def _return_float_dtype(X, Y):
     1. If dtype of X and Y is float32, then dtype float32 is returned.
     2. Else dtype float is returned.
     """
-    if not issparse(X) and not isinstance(X, np.ndarray):
-        X = np.asarray(X)
+    if not issparse(X):
+        X = fp.asarray(X)
 
     if Y is None:
         Y_dtype = X.dtype
-    elif not issparse(Y) and not isinstance(Y, np.ndarray):
-        Y = np.asarray(Y)
+    elif not issparse(Y):
+        Y = fp.asarray(Y)
         Y_dtype = Y.dtype
     else:
         Y_dtype = Y.dtype
@@ -247,14 +249,14 @@ def euclidean_distances(X, Y=None, Y_norm_squared=None, squared=False,
     distances *= -2
     distances += XX
     distances += YY
-    np.maximum(distances, 0, out=distances)
+    fp.maximum(distances, 0, out=distances)
 
     if X is Y:
         # Ensure that distances between vectors and themselves are set to 0.0.
         # This may not be the case due to floating point rounding errors.
         distances.flat[::distances.shape[0] + 1] = 0.0
 
-    return distances if squared else np.sqrt(distances, out=distances)
+    return distances if squared else fp.sqrt(distances, out=distances)
 
 
 def pairwise_distances_argmin_min(X, Y, axis=1, metric="euclidean",
@@ -355,7 +357,7 @@ def pairwise_distances_argmin_min(X, Y, axis=1, metric="euclidean",
     values = dist.min(axis=1)
 
     if metric == "euclidean" and not metric_kwargs.get("squared", False):
-        np.sqrt(values, values)
+        fp.sqrt(values, values)
     return indices, values
 
 
