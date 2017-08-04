@@ -24,6 +24,7 @@ the lower the better
 from __future__ import division
 
 import numpy as np
+import flashpy as fp
 
 from ..utils.validation import check_array, check_consistent_length
 from ..utils.validation import column_or_1d
@@ -537,9 +538,11 @@ def r2_score(y_true, y_pred, sample_weight=None,
 
     numerator = (weight * (y_true - y_pred) ** 2).sum(axis=0,
                                                       dtype=np.float64)
-    denominator = (weight * (y_true - np.average(
+    denominator = (weight * (y_true - fp.average(
         y_true, axis=0, weights=sample_weight)) ** 2).sum(axis=0,
                                                           dtype=np.float64)
+    denominator = np.array(denominator)
+    numerator = np.array(numerator)
     nonzero_denominator = denominator != 0
     nonzero_numerator = numerator != 0
     valid_score = nonzero_denominator & nonzero_numerator
