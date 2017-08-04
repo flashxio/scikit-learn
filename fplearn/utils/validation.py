@@ -13,6 +13,7 @@ import numbers
 
 import numpy as np
 import scipy.sparse as sp
+import flashpy as fp
 
 from ..externals import six
 from ..utils.fixes import signature
@@ -33,7 +34,7 @@ def _assert_all_finite(X):
     """Like assert_all_finite, but only for ndarray."""
     if _get_config()['assume_finite']:
         return
-    X = np.asanyarray(X)
+    X = fp.asanyarray(X)
     # First try an O(n) time, O(1) space solution for the common case that
     # everything is finite; fall back to O(n) space np.isfinite to prevent
     # false positives from overflow in sum method.
@@ -399,7 +400,7 @@ def check_array(array, accept_sparse=False, dtype="numeric", order=None,
         array = _ensure_sparse_format(array, accept_sparse, dtype, copy,
                                       force_all_finite)
     else:
-        array = np.array(array, dtype=dtype, order=order, copy=copy)
+        array = fp.array(array, dtype=dtype, order=order, copy=copy)
 
         if ensure_2d:
             if array.ndim == 1:
@@ -408,9 +409,9 @@ def check_array(array, accept_sparse=False, dtype="numeric", order=None,
                     "Reshape your data either using array.reshape(-1, 1) if "
                     "your data has a single feature or array.reshape(1, -1) "
                     "if it contains a single sample.".format(array))
-            array = np.atleast_2d(array)
+            array = fp.atleast_2d(array)
             # To ensure that array flags are maintained
-            array = np.array(array, dtype=dtype, order=order, copy=copy)
+            array = fp.array(array, dtype=dtype, order=order, copy=copy)
 
         # make sure we actually converted to numeric:
         if dtype_numeric and array.dtype.kind == "O":
@@ -571,14 +572,14 @@ def column_or_1d(y, warn=False):
     """
     shape = np.shape(y)
     if len(shape) == 1:
-        return np.ravel(y)
+        return fp.ravel(y)
     if len(shape) == 2 and shape[1] == 1:
         if warn:
             warnings.warn("A column-vector y was passed when a 1d array was"
                           " expected. Please change the shape of y to "
                           "(n_samples, ), for example using ravel().",
                           DataConversionWarning, stacklevel=2)
-        return np.ravel(y)
+        return fp.ravel(y)
 
     raise ValueError("bad input shape {0}".format(shape))
 
