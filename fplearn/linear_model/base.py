@@ -23,6 +23,8 @@ import scipy.sparse as sp
 from scipy import linalg
 from scipy import sparse
 
+import flashpy as fp
+
 from ..externals import six
 from ..externals.joblib import Parallel, delayed
 from ..base import BaseEstimator, ClassifierMixin, RegressorMixin
@@ -166,7 +168,7 @@ def _preprocess_data(X, y, fit_intercept, normalize=False, copy=True,
 
     X = check_array(X, copy=copy, accept_sparse=['csr', 'csc'],
                     dtype=FLOAT_DTYPES)
-    y = np.asarray(y, dtype=X.dtype)
+    y = fp.asarray(y, dtype=X.dtype)
 
     if fit_intercept:
         if sp.issparse(X):
@@ -190,22 +192,22 @@ def _preprocess_data(X, y, fit_intercept, normalize=False, copy=True,
                 X_scale = np.ones(X.shape[1], dtype=X.dtype)
 
         else:
-            X_offset = np.average(X, axis=0, weights=sample_weight)
+            X_offset = fp.average(X, axis=0, weights=sample_weight)
             X -= X_offset
             if normalize:
                 X, X_scale = f_normalize(X, axis=0, copy=False,
                                          return_norm=True)
             else:
-                X_scale = np.ones(X.shape[1], dtype=X.dtype)
-        y_offset = np.average(y, axis=0, weights=sample_weight)
+                X_scale = fp.ones(X.shape[1], dtype=X.dtype)
+        y_offset = fp.average(y, axis=0, weights=sample_weight)
         y = y - y_offset
     else:
-        X_offset = np.zeros(X.shape[1], dtype=X.dtype)
-        X_scale = np.ones(X.shape[1], dtype=X.dtype)
+        X_offset = fp.zeros(X.shape[1], dtype=X.dtype)
+        X_scale = fp.ones(X.shape[1], dtype=X.dtype)
         if y.ndim == 1:
             y_offset = X.dtype.type(0)
         else:
-            y_offset = np.zeros(y.shape[1], dtype=X.dtype)
+            y_offset = fp.zeros(y.shape[1], dtype=X.dtype)
 
     return X, y, X_offset, y_offset, X_scale
 
@@ -262,7 +264,7 @@ class LinearModel(six.with_metaclass(ABCMeta, BaseEstimator)):
         """
         if self.fit_intercept:
             self.coef_ = self.coef_ / X_scale
-            self.intercept_ = y_offset - np.dot(X_offset, self.coef_.T)
+            self.intercept_ = y_offset - fp.dot(X_offset, self.coef_.T)
         else:
             self.intercept_ = 0.
 
