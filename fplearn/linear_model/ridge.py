@@ -344,7 +344,8 @@ def ridge_regression(X, y, alpha, sample_weight=None, solver='auto',
 
     ravel = False
     if y.ndim == 1:
-        y = y.reshape(-1, 1)
+        y = y.as_matrix()
+#        y = y.reshape(-1, 1)
         ravel = True
 
     n_samples_, n_targets = y.shape
