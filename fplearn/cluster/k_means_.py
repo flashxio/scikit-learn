@@ -289,6 +289,7 @@ def k_means(X, n_clusters, init='k-means++', precompute_distances='auto',
     # (n_clusters, n_samples). To stop KMeans from eating up memory we only
     # activate this if the created matrix is guaranteed to be under 100MB. 12
     # million entries consume a little under 100MB if they are of type double.
+    precompute_distances = True
     if precompute_distances == 'auto':
         n_samples = X.shape[0]
         precompute_distances = (n_clusters * n_samples) < 12e6
