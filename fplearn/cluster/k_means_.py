@@ -17,6 +17,8 @@ import numpy as np
 import scipy.sparse as sp
 
 import flashpy as fp
+from flashpy.mat import agg_sum as fp_agg_sum
+from flashpy.mat import agg_count as fp_agg_count
 
 from ..base import BaseEstimator, ClusterMixin, TransformerMixin
 from ..metrics.pairwise import euclidean_distances
