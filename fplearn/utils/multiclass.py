@@ -16,6 +16,7 @@ from scipy.sparse import dok_matrix
 from scipy.sparse import lil_matrix
 
 import numpy as np
+import flashpy as fp
 
 from ..externals.six import string_types
 from .validation import check_array
@@ -138,7 +139,7 @@ def is_multilabel(y):
     True
     """
     if hasattr(y, '__array__'):
-        y = np.asarray(y)
+        y = fp.asarray(y)
     if not (hasattr(y, "shape") and y.ndim == 2 and y.shape[1] > 1):
         return False
 
@@ -247,7 +248,7 @@ def type_of_target(y):
         return 'multilabel-indicator'
 
     try:
-        y = np.asarray(y)
+        y = fp.asarray(y)
     except ValueError:
         # Known to fail in numpy 1.3 for array of arrays
         return 'unknown'
@@ -281,7 +282,7 @@ def type_of_target(y):
         # [.1, .2, 3] or [[.1, .2, 3]] or [[1., .2]] and not [1., 2., 3.]
         return 'continuous' + suffix
 
-    if (len(np.unique(y)) > 2) or (y.ndim >= 2 and len(y[0]) > 1):
+    if (len(fp.unique(y)) > 2) or (y.ndim >= 2 and len(y[0]) > 1):
         return 'multiclass' + suffix  # [1, 2, 3] or [[1., 2., 3]] or [[1, 2]]
     else:
         return 'binary'  # [1, 2] or [["a"], ["b"]]
