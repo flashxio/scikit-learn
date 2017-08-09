@@ -15,7 +15,9 @@ import warnings
 
 import numpy as np
 from scipy import optimize, sparse
-from scipy.special import expit
+
+import flashpy as fp
+from flashpy.special import expit
 
 from .base import LinearClassifierMixin, SparseCoefMixin, BaseEstimator
 from .sag import sag_solver
@@ -111,7 +113,7 @@ def _logistic_loss_and_grad(w, X, y, alpha, sample_weight=None):
     w, c, yz = _intercept_dot(w, X, y)
 
     if sample_weight is None:
-        sample_weight = np.ones(n_samples)
+        sample_weight = fp.ones(n_samples)
 
     # Logistic loss is the negative of the log of the logistic function.
     out = -np.sum(sample_weight * log_logistic(yz)) + .5 * alpha * np.dot(w, w)
@@ -123,8 +125,8 @@ def _logistic_loss_and_grad(w, X, y, alpha, sample_weight=None):
 
     # Case where we fit the intercept.
     if grad.shape[0] > n_features:
-        grad[-1] = z0.sum()
-    return out, grad
+        grad[-1] = np.array(z0.sum())[0]
+    return np.array(out), np.array(grad)
 
 
 def _logistic_loss(w, X, y, alpha, sample_weight=None):
@@ -160,7 +162,7 @@ def _logistic_loss(w, X, y, alpha, sample_weight=None):
 
     # Logistic loss is the negative of the log of the logistic function.
     out = -np.sum(sample_weight * log_logistic(yz)) + .5 * alpha * np.dot(w, w)
-    return out
+    return np.array(out)
 
 
 def _logistic_grad_hess(w, X, y, alpha, sample_weight=None):
@@ -209,7 +211,7 @@ def _logistic_grad_hess(w, X, y, alpha, sample_weight=None):
 
     # Case where we fit the intercept.
     if fit_intercept:
-        grad[-1] = z0.sum()
+        grad[-1] = np.array(z0.sum())[0]
 
     # The mat-vec product of the Hessian
     d = sample_weight * z * (1 - z)
@@ -598,7 +600,7 @@ def logistic_regression_path(X, y, pos_class=None, Cs=10, fit_intercept=True,
         y = check_array(y, ensure_2d=False, dtype=None)
         check_consistent_length(X, y)
     _, n_features = X.shape
-    classes = np.unique(y)
+    classes = fp.unique(y)
     random_state = check_random_state(random_state)
 
     if pos_class is None and multi_class != 'multinomial':
@@ -611,10 +613,10 @@ def logistic_regression_path(X, y, pos_class=None, Cs=10, fit_intercept=True,
     # and check length
     # Otherwise set them to 1 for all examples
     if sample_weight is not None:
-        sample_weight = np.array(sample_weight, dtype=X.dtype, order='C')
+        sample_weight = fp.array(sample_weight, dtype=X.dtype, order='C')
         check_consistent_length(y, sample_weight)
     else:
-        sample_weight = np.ones(X.shape[0], dtype=X.dtype)
+        sample_weight = fp.ones(X.shape[0], dtype=X.dtype)
 
     # If class_weights is a dict (provided by the user), the weights
     # are assigned to the original labels. If it is "balanced", then
@@ -630,7 +632,7 @@ def logistic_regression_path(X, y, pos_class=None, Cs=10, fit_intercept=True,
         w0 = np.zeros(n_features + int(fit_intercept), dtype=X.dtype)
         mask_classes = np.array([-1, 1])
         mask = (y == pos_class)
-        y_bin = np.ones(y.shape, dtype=X.dtype)
+        y_bin = fp.ones(y.shape, dtype=X.dtype)
         y_bin[~mask] = -1.
         # for compute_class_weight
 
@@ -1215,7 +1217,7 @@ class LogisticRegression(BaseEstimator, LinearClassifierMixin,
         X, y = check_X_y(X, y, accept_sparse='csr', dtype=_dtype,
                          order="C")
         check_classification_targets(y)
-        self.classes_ = np.unique(y)
+        self.classes_ = np.array(fp.unique(y))
         n_samples, n_features = X.shape
 
         _check_solver_option(self.solver, self.multi_class, self.penalty,
