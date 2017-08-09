@@ -15,8 +15,10 @@ from __future__ import division
 import warnings
 
 import numpy as np
-from scipy import linalg
 from scipy.sparse import issparse, csr_matrix
+
+import flashpy as fp
+from flashpy import linalg
 
 from . import check_random_state, deprecated
 from .fixes import np_version
@@ -68,7 +70,7 @@ def row_norms(X, squared=False):
         norms = np.einsum('ij,ij->i', X, X)
 
     if not squared:
-        np.sqrt(norms, norms)
+        fp.sqrt(norms, norms)
     return norms
 
 
@@ -137,7 +139,7 @@ def safe_sparse_dot(a, b, dense_output=False):
             ret = ret.toarray()
         return ret
     else:
-        return np.dot(a, b)
+        return fp.dot(a, b)
 
 
 def randomized_range_finder(A, size, n_iter,
@@ -332,7 +334,7 @@ def randomized_svd(M, n_components, n_oversamples=10, n_iter='auto',
     Uhat, s, V = linalg.svd(B, full_matrices=False)
 
     del B
-    U = np.dot(Q, Uhat)
+    U = fp.dot(Q, Uhat)
 
     if flip_sign:
         if not transpose:
@@ -523,18 +525,18 @@ def svd_flip(u, v, u_based_decision=True):
     """
     if u_based_decision:
         # columns of u, rows of v
-        max_abs_cols = np.argmax(np.abs(u), axis=0)
-        signs = np.sign(u[max_abs_cols, xrange(u.shape[1])])
+        max_abs_cols = np.argmax(fp.abs(u), axis=0)
+        signs = fp.sign(u[max_abs_cols, xrange(u.shape[1])])
         u *= signs
         v *= signs[:, np.newaxis]
     else:
         # rows of v, columns of u
+        # v is from linalg.svd. It's still a NumPy array.
         max_abs_rows = np.argmax(np.abs(v), axis=1)
-        signs = np.sign(v[xrange(v.shape[0]), max_abs_rows])
+        signs = fp.sign(v[xrange(v.shape[0]), max_abs_rows])
         u *= signs
         v *= signs[:, np.newaxis]
     return u, v
-
 
 def log_logistic(X, out=None):
     """Compute the log of the logistic function, ``log(1 / (1 + e ** -x))``.
@@ -566,18 +568,18 @@ def log_logistic(X, out=None):
     http://fa.bianp.net/blog/2013/numerical-optimizers-for-logistic-regression/
     """
     is_1d = X.ndim == 1
-    X = np.atleast_2d(X)
+    X = fp.atleast_2d(X)
     X = check_array(X, dtype=np.float64)
 
     n_samples, n_features = X.shape
 
     if out is None:
-        out = np.empty_like(X)
+        out = fp.empty_like(X)
 
     _log_logistic_sigmoid(n_samples, n_features, X, out)
 
     if is_1d:
-        return np.squeeze(out)
+        return fp.squeeze(out)
     return out
 
 
