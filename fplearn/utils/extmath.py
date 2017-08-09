@@ -23,7 +23,6 @@ from flashpy import linalg
 from . import check_random_state, deprecated
 from .fixes import np_version
 from .fixes import logsumexp as scipy_logsumexp
-#from ._logistic_sigmoid import _log_logistic_sigmoid
 from ..externals.six.moves import xrange
 #from .sparsefuncs_fast import csr_row_norms
 from .validation import check_array
@@ -46,12 +45,11 @@ def squared_norm(x):
     Returns the Euclidean norm when x is a vector, the Frobenius norm when x
     is a matrix (2-d array). Faster than norm(x) ** 2.
     """
-    x = np.ravel(x, order='K')
     if np.issubdtype(x.dtype, np.integer):
         warnings.warn('Array type is integer, np.dot may overflow. '
                       'Data should be float type to avoid this issue',
                       UserWarning)
-    return np.dot(x, x)
+    return (x * x).sum()
 
 
 def row_norms(X, squared=False):
@@ -67,7 +65,8 @@ def row_norms(X, squared=False):
             X = csr_matrix(X)
         norms = csr_row_norms(X)
     else:
-        norms = np.einsum('ij,ij->i', X, X)
+        norms = (X * X).sum(axis=1)
+#        norms = np.einsum('ij,ij->i', X, X)
 
     if not squared:
         fp.sqrt(norms, norms)
@@ -537,6 +536,12 @@ def svd_flip(u, v, u_based_decision=True):
         u *= signs
         v *= signs[:, np.newaxis]
     return u, v
+
+def _log_logistic_sigmoid(n_samples, n_features, X, out):
+    X1 = -fp.log(1 + fp.exp(-X))
+    X2 = X - fp.log(1 + fp.exp(X))
+    out.assign(fp.where(X > 0, X1, X2))
+    return out
 
 def log_logistic(X, out=None):
     """Compute the log of the logistic function, ``log(1 / (1 + e ** -x))``.
