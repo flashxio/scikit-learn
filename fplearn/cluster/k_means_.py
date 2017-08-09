@@ -16,6 +16,8 @@ import warnings
 import numpy as np
 import scipy.sparse as sp
 
+import flashpy as fp
+
 from ..base import BaseEstimator, ClusterMixin, TransformerMixin
 from ..metrics.pairwise import euclidean_distances
 from ..metrics.pairwise import pairwise_distances_argmin_min
@@ -494,7 +496,7 @@ def _kmeans_single_lloyd(X, n_clusters, max_iter=300, init='k-means++',
 
     # Allocate memory to store the distances for each sample to its
     # closer center for reallocation in case of ties
-    distances = np.zeros(shape=(X.shape[0],), dtype=X.dtype)
+    distances = fp.zeros(shape=(X.shape[0],), dtype=X.dtype)
 
     # iterations
     for i in range(max_iter):
@@ -620,7 +622,7 @@ def _labels_inertia(X, x_squared_norms, centers,
     n_samples = X.shape[0]
     # set the default value of centers to -1 to be able to detect any anomaly
     # easily
-    labels = -np.ones(n_samples, np.int32)
+    labels = -fp.ones(n_samples, np.int32)
     if distances is None:
         distances = np.zeros(shape=(0,), dtype=X.dtype)
     # distances will be changed in-place
